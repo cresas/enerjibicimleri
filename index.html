@@ -28,20 +28,19 @@
     
     html{
       height: 100%;
-      /* Büyük ekranlarda scrollbarı gizler */
+      /* Mobil kaydırmayı etkin tutar */
+      overflow-x: hidden;
     }
     
     body{
-      /* ORTALAMA VE HİZALAMA */
-      display: flex;
-      justify-content: center; /* Yatayda ortalama */
-      align-items: flex-start; /* İçeriği yukarı hizala */
+      /* MOBİLDE ORİJİNAL HİZALAMA */
+      display: block;
       min-height: 100vh; 
       margin: 0; 
       
-      /* ÖLÇEKLENDİRME */
-      transform: scale(0.67);
-      transform-origin: top center; /* Üstten ve ortadan küçült */
+      /* ÖLÇEKLENDİRME KALDIRILDI */
+      transform: none; 
+      transform-origin: top center; 
       
       /* Geri kalan stiller */
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
@@ -52,10 +51,19 @@
       line-height:1.6;
     }
 
-    /* BÜYÜK EKRANLAR İÇİN KAYDIRMA ÇUBUĞU KONTROLÜ */
-    @media (min-width: 1024px) {
+    /* YALNIZCA MASAÜSTÜ İÇİN ÖLÇEKLENDİRME VE HİZALAMA */
+    @media (min-width: 768px) {
         html {
-            overflow: hidden; 
+            overflow: hidden; /* Masaüstünde kaydırma çubuğunu kaldırır */
+        }
+        body {
+            display: flex;
+            justify-content: center; /* Yatayda ortala */
+            align-items: flex-start; /* İçeriği yukarı hizala */
+            
+            /* ÖLÇEK: %75 */
+            transform: scale(0.75);
+            transform-origin: top center;
         }
     }
     
@@ -172,15 +180,11 @@
       display:inline-block;
     }
 
-    /* MOBİL KONTROL ALANI */
+    /* MOBİL KONTROL ALANI: GİZLENDİ */
     .mobile-controls {
-        display: flex;
-        justify-content: flex-start; /* Butonları sola hizala */
-        gap: 10px; /* Butonlar arası boşluk */
-        margin-top: 24px;
-        margin-bottom: 24px; 
+        display: none;
     }
-
+    
     /* SADECE SİMGE İÇEREN BUTONLAR İÇİN STİL */
     .mobile-controls .btn-icon-only {
         flex-grow: 0; 
@@ -193,7 +197,7 @@
         margin-left: 0; /* Sıfırlama */
     }
     
-    /* MASAÜSTÜ KONTROLLERİ GİZLE */
+    /* MASAÜSTÜ KONTROLLERİ */
     .desktop-controls {
         display: none;
         justify-content: center;
@@ -204,9 +208,6 @@
 
     /* MASAÜSTÜ KONTROLLERİ GÖSTER */
     @media (min-width: 768px) {
-        .mobile-controls {
-            display: none;
-        }
         .desktop-controls {
             display: flex;
         }
@@ -342,7 +343,7 @@
     .muted{
       color:var(--text-muted);
       font-size:16px; 
-      margin-top:0px; /* Önceki butondan hemen sonra geleceği için marjin kaldırıldı */
+      margin-top:32px; /* Mobil kontrolden sonra bu marjini geri getirdik */
       padding:16px;
       background:rgba(148,163,184,.05);
       border-radius:12px;
@@ -805,9 +806,7 @@
     checked = true; 
     selected = null; 
     
-    // Kontrol Et butonlarını gizleme kodu kaldırıldığı için sadece reset/reveal butonları için görünürlük ayarı kaldı
-    // Bu fonksiyonun amacı cevapları göstermek ve Kontrol Et'i gizlemektir.
-    // Ancak Kontrol Et'in gizlenmemesi istendiği için bu satırları yorum satırı yapıyoruz:
+    // Kontrol Et butonunu gizleme kodu kaldırıldığı için sadece reset/reveal butonları için görünürlük ayarı kaldı
     // document.getElementById('btnCheckDesktop').style.display = 'none';
     // document.getElementById('btnCheckMobile').style.display = 'none';
     
