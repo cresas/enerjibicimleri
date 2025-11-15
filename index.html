@@ -26,9 +26,24 @@
     
     *{box-sizing:border-box;margin:0;padding:0}
     
-    html,body{height:100%}
+    html{
+      height: 100%;
+      /* Büyük ekranlarda scrollbarı gizler */
+    }
     
     body{
+      /* ORTALAMA VE HİZALAMA */
+      display: flex;
+      justify-content: center; /* Yatayda ortalama */
+      align-items: flex-start; /* İçeriği yukarı hizala */
+      min-height: 100vh; 
+      margin: 0; 
+      
+      /* ÖLÇEKLENDİRME */
+      transform: scale(0.67);
+      transform-origin: top center; /* Üstten ve ortadan küçült */
+      
+      /* Geri kalan stiller */
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
       background:var(--bg);
       background-image:var(--bg-gradient);
@@ -36,11 +51,19 @@
       color:var(--text);
       line-height:1.6;
     }
+
+    /* BÜYÜK EKRANLAR İÇİN KAYDIRMA ÇUBUĞU KONTROLÜ */
+    @media (min-width: 1024px) {
+        html {
+            overflow: hidden; 
+        }
+    }
     
     .container{
       max-width:1200px;
       margin:0 auto;
       padding:16px 20px 120px;
+      width: 100%;
     }
     
     header.appbar{
@@ -68,9 +91,10 @@
       }
     }
     
+    /* Başlık daha büyük ve çarpıcı */
     h1{
-      font-size:clamp(22px,3.5vw,32px);
-      margin:0 0 8px;
+      font-size:clamp(28px,4.5vw,40px); 
+      margin:0 0 10px; 
       font-weight:800;
       background:linear-gradient(120deg, var(--accent-glow), var(--green-glow));
       -webkit-background-clip:text;
@@ -78,24 +102,13 @@
       background-clip:text;
     }
     
+    /* Açıklama paragrafı 18px ve daha belirgin */
     p.lead{
       margin:0;
-      color:var(--text-muted);
-      font-size:clamp(13px,2.2vw,15px);
-      line-height:1.5;
-    }
-    
-    .toolbar{
-      display:none;
-    }
-    
-    @media (min-width:768px){
-      .toolbar{
-        display:flex;
-        gap:12px;
-        justify-content:center;
-        margin-top:24px;
-      }
+      color:var(--text); 
+      font-size:clamp(15px,2.5vw,18px); 
+      line-height:1.6;
+      font-weight: 500; 
     }
     
     .btn{
@@ -112,6 +125,8 @@
       transition:all .2s ease;
       position:relative;
       overflow:hidden;
+      flex-grow: 1; /* Mobil butonların eşit büyümesi için */
+      white-space: nowrap;
     }
     
     .btn::before{
@@ -155,6 +170,46 @@
       border:1px solid var(--accent);
       border-radius:12px;
       display:inline-block;
+    }
+
+    /* MOBİL KONTROL ALANI */
+    .mobile-controls {
+        display: flex;
+        justify-content: flex-start; /* Butonları sola hizala */
+        gap: 10px; /* Butonlar arası boşluk */
+        margin-top: 24px;
+        margin-bottom: 24px; 
+    }
+
+    /* SADECE SİMGE İÇEREN BUTONLAR İÇİN STİL */
+    .mobile-controls .btn-icon-only {
+        flex-grow: 0; 
+        width: 44px; /* Sabit kare genişlik */
+        padding: 12px; 
+        font-size: 18px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: 0; /* Sıfırlama */
+    }
+    
+    /* MASAÜSTÜ KONTROLLERİ GİZLE */
+    .desktop-controls {
+        display: none;
+        justify-content: center;
+        gap: 16px;
+        margin-top: 32px;
+        flex-wrap: wrap;
+    }
+
+    /* MASAÜSTÜ KONTROLLERİ GÖSTER */
+    @media (min-width: 768px) {
+        .mobile-controls {
+            display: none;
+        }
+        .desktop-controls {
+            display: flex;
+        }
     }
     
     .score b{
@@ -279,40 +334,15 @@
       }
     }
 
+    /* FAB alanı tamamen gizlendi */
     .fab{
-      position:fixed;
-      right:16px;
-      bottom:16px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      z-index:20;
-    }
-    
-    @media (min-width:768px){
-      .fab{
-        display:none;
-      }
-    }
-    
-    .desktop-controls{
-      display:none;
-    }
-    
-    @media (min-width:768px){
-      .desktop-controls{
-        display:flex;
-        justify-content:center;
-        gap:16px;
-        margin-top:32px;
-        flex-wrap:wrap;
-      }
+        display: none;
     }
 
     .muted{
       color:var(--text-muted);
-      font-size:13px;
-      margin-top:32px;
+      font-size:16px; 
+      margin-top:0px; /* Önceki butondan hemen sonra geleceği için marjin kaldırıldı */
       padding:16px;
       background:rgba(148,163,184,.05);
       border-radius:12px;
@@ -425,7 +455,7 @@
     <header class="appbar">
       <div>
         <h1>⚡ Enerji Biçimleri ↔ Günlük Hayat Örnekleri</h1>
-        <p class="lead">Kartları uygun enerji kategorisine <b>sürükleyip bırakın</b>. İsterseniz bir karta tıklayıp ardından bir kategoriye tıklayarak da yerleştirebilirsiniz. Bazı olaylar birden fazla enerji dönüşümü içerebilir; en baskın olanı düşünün.</p>
+        <p class="lead">Kartları uygun enerji kategorisine sürükleyip bırakın. İsterseniz bir karta tıklayıp ardından bir kategoriye tıklayarak da yerleştirebilirsiniz. Bazı olaylar birden fazla enerji dönüşümü içerebilir; en baskın olanı düşünün.</p>
       </div>
     </header>
 
@@ -443,25 +473,26 @@
       <h2 class="section-title">📚 Enerji Kategorileri</h2>
       <div class="grid" id="grid-categories"></div>
     </section>
+    
+    <div class="mobile-controls">
+        <button class="btn" id="btnCheckMobile" title="Kontrol Et">✓ Kontrol Et</button>
+        <button class="btn btn-icon-only" id="btnResetMobile" title="Sıfırla">↻</button>
+        <button class="btn btn-icon-only" id="btnRevealMobile" title="Cevapları Göster">👁</button>
+    </div>
 
     <div class="desktop-controls">
-      <button class="btn" id="btnCheck">✓ Kontrol Et</button>
-      <button class="btn" id="btnReset">↻ Sıfırla</button>
-      <button class="btn" id="btnReveal">👁 Cevapları Göster</button>
+      <button class="btn" id="btnCheckDesktop">✓ Kontrol Et</button>
+      <button class="btn" id="btnResetDesktop">↻ Sıfırla</button>
+      <button class="btn" id="btnRevealDesktop">👁 Cevapları Göster</button>
     </div>
 
-    <div class="fab">
-      <button class="btn" id="fabCheck" aria-label="Kontrol Et">✓</button>
-      <button class="btn" id="fabReset" aria-label="Sıfırla">↻</button>
-      <button class="btn" id="fabReveal" aria-label="Cevapları Göster">👁</button>
-    </div>
+    <div class="fab"></div>
 
     <footer class="muted">
-      <strong>💡 Not:</strong> Örneğin "mum alevi" kimyasal enerjinin ışık ve ısıya dönüşmesine örnektir. Bu etkinlikte kartlar baskın görülen enerji biçimine göre eşleştirilecek şekilde hazırlanmıştır.
+      <strong>💡 Not:</strong> Örneğin "mum alevi" kimyasal enerjinin ışık ve ısıya dönüşmesine örnektir. Bu etkinlikte kartlar baskın görülen enerji biçimine göre eşleştirilecek şekilde hazırlanmıştır. **Ancak "Mum alevi" kartları özel olarak hem Isı hem de Işık Enerjisi kutularına yerleştirilebilir.**
     </footer>
   </div>
 
-  <!-- Tebrikler Modal -->
   <div class="modal-overlay" id="congratsModal">
     <div class="modal-card">
       <div class="modal-icon">🎉</div>
@@ -492,15 +523,20 @@
     { id: "ex3", text: "Rüzgâr türbini kanadının dönmesi", category: "mekanik", hint: "Havanın hareketi kanatları çevirir" },
     { id: "ex4", text: "Kaynayan çaydanlık", category: "isi", hint: "Isı, suyun sıcaklığını artırır" },
     { id: "ex5", text: "Sürtünerek ısınan eller", category: "isi", hint: "Sürtünme ısı üretir" },
-    { id: "ex6", text: "Fırında pişen kek", category: "isi", hint: "Fırındaki ısı yemeği pişirir" },
     { id: "ex7", text: "Telefonu şarj etmek", category: "elektrik", hint: "Elektrik, bataryada depolanır" },
     { id: "ex8", text: "Prizden çalışan bilgisayar", category: "elektrik", hint: "Cihazın çalışması için elektrik" },
     { id: "ex9", text: "Elektrikli süpürge", category: "elektrik", hint: "Elektrik motoru çalıştırır" },
     { id: "ex10", text: "Zil çalması", category: "ses", hint: "Titreşimler havada yayılan ses dalgalarıdır" },
-    { id: "ex11", text: "Hoparlörden müzik", category: "ses", hint: "Elektrik sinyali titreşime dönüşür" },
+    { id: "ex11", text: "Hoparlörden müzik", category: "ses", hint: "Titreşimden ses oluşur" },
     { id: "ex12", text: "Ambulans sireni", category: "ses", hint: "Yüksek frekanslı ses dalgaları" },
     { id: "ex13", text: "El feneri ışığı", category: "isik", hint: "Elektrik → ışık" },
-    { id: "ex14", text: "Mum alevi", category: "isik", hint: "Kimyasal enerji → ışık ve ısı" },
+    
+    // 1. Mum Alevi Kartı (Hem Isı hem Işık kabul eder)
+    { id: "ex14", text: "Mum alevi", category: "isik", hint: "Kimyasal enerji → ışık ve ısı" }, 
+    
+    // 2. Mum Alevi Kartı (Hem Isı hem Işık kabul eder)
+    { id: "ex22", text: "Mum alevi", category: "isik", hint: "Kimyasal enerji → ışık ve ısı" }, 
+    
     { id: "ex15", text: "Güneş panellerine gelen güneş ışığı", category: "isik", hint: "Işığın enerjisi elektrik üretir" },
     { id: "ex16", text: "Pillerin enerji depolaması", category: "kimyasal", hint: "Kimyasal bağlarda enerji" },
     { id: "ex17", text: "Benzinle çalışan araba", category: "kimyasal", hint: "Yakıt yanınca enerji açığa çıkar" },
@@ -567,13 +603,12 @@
     poolZoneEl.addEventListener('click', ()=>handleClickZone('pool'));
   }
 
-  // --- Touch Desteği İçin Değişkenler ---
+  // --- Touch Desteği ve Kart Şablonu ---
   let touchDraggedId = null;
   let ghostElement = null;
   let touchStartX = 0;
   let touchStartY = 0;
 
-  // --- Kart şablonu ---
   function createCard(it){
     const el = document.createElement('div');
     el.className = 'card';
@@ -582,11 +617,20 @@
     el.textContent = it.text;
 
     if(checked){
-      const good = placement[it.id] === it.category;
-      el.classList.add(good? 'correct':'wrong');
+      // Kontrol kuralını burada da uygula:
+      let isMultiAcceptable = (it.id === 'ex14' || it.id === 'ex22');
+      let isCorrect;
+
+      if(isMultiAcceptable){
+          isCorrect = (placement[it.id] === 'isik' || placement[it.id] === 'isi');
+      } else {
+          isCorrect = (placement[it.id] === it.category);
+      }
+      
+      el.classList.add(isCorrect ? 'correct':'wrong');
       const tick = document.createElement('span');
       tick.className = 'tick';
-      tick.textContent = good ? '✓' : '✗';
+      tick.textContent = isCorrect ? '✓' : '✗';
       el.appendChild(tick);
     }
 
@@ -609,7 +653,6 @@
     return el;
   }
 
-  // --- Touch Olayları ---
   function handleTouchStart(e, id){
     if(checked) return;
     touchDraggedId = id;
@@ -707,9 +750,24 @@
     scoreEl.innerHTML = `Skor: <b>${score.correct}</b> / ${score.total}`;
   }
 
+  /*
+  ** ÖNEMLİ DEĞİŞİKLİK: Mum alevi (ex14 VE ex22) için özel kontrol eklendi.
+  */
   function computeScore(){
     let correct = 0; const total = EXAMPLES.length;
-    for(const it of EXAMPLES){ if(placement[it.id] === it.category) correct++; }
+    for(const it of EXAMPLES){ 
+      let isMultiAcceptable = (it.id === 'ex14' || it.id === 'ex22');
+      
+      if(isMultiAcceptable){
+        // Mum alevi için özel kural: Isı veya Işık'ta doğru kabul et
+        if(placement[it.id] === 'isik' || placement[it.id] === 'isi'){
+          correct++;
+        }
+      } else {
+        // Diğer kartlar için standart kural
+        if(placement[it.id] === it.category) correct++;
+      }
+    }
     return {correct,total};
   }
 
@@ -728,33 +786,51 @@
     placement = Object.fromEntries(EXAMPLES.map(e=>[e.id,'pool'])); 
     checked = false; 
     selected = null; 
-    // Kontrol Et butonlarını tekrar göster
-    document.getElementById('btnCheck').style.display = '';
-    document.getElementById('fabCheck').style.display = '';
+    
+    // Masaüstü butonları geri yükle
+    document.getElementById('btnCheckDesktop').style.display = '';
+    document.getElementById('btnResetDesktop').style.display = '';
+    document.getElementById('btnRevealDesktop').style.display = '';
+    
+    // Mobil butonları geri yükle
+    document.getElementById('btnCheckMobile').style.display = '';
+    document.getElementById('btnResetMobile').style.display = '';
+    document.getElementById('btnRevealMobile').style.display = '';
+
     render(); 
   }
+  
   function revealAll(){ 
     for(const it of EXAMPLES) placement[it.id] = it.category; 
     checked = true; 
     selected = null; 
-    // Kontrol Et butonlarını gizle
-    document.getElementById('btnCheck').style.display = 'none';
-    document.getElementById('fabCheck').style.display = 'none';
+    
+    // Kontrol Et butonlarını gizleme kodu kaldırıldığı için sadece reset/reveal butonları için görünürlük ayarı kaldı
+    // Bu fonksiyonun amacı cevapları göstermek ve Kontrol Et'i gizlemektir.
+    // Ancak Kontrol Et'in gizlenmemesi istendiği için bu satırları yorum satırı yapıyoruz:
+    // document.getElementById('btnCheckDesktop').style.display = 'none';
+    // document.getElementById('btnCheckMobile').style.display = 'none';
+    
+    document.getElementById('btnResetDesktop').style.display = '';
+    document.getElementById('btnRevealDesktop').style.display = '';
+    document.getElementById('btnResetMobile').style.display = '';
+    document.getElementById('btnRevealMobile').style.display = '';
+    
     render(); 
   }
+  
   function checkNow(){ 
     checked = true; 
     render(); 
     
+    // Kontrol Et butonunu gizleme kodu kaldırıldı
+    // document.getElementById('btnCheckDesktop').style.display = 'none';
+    // document.getElementById('btnCheckMobile').style.display = 'none';
+    
     // Ses ve mesaj kontrolü
     const score = computeScore();
-    let correctCount = 0;
-    let wrongCount = 0;
-    
-    for(const it of EXAMPLES){
-      if(placement[it.id] === it.category) correctCount++;
-      else wrongCount++;
-    }
+    let correctCount = score.correct;
+    let wrongCount = EXAMPLES.length - correctCount;
     
     if(correctCount > 0 && wrongCount > 0){
       // Hem doğru hem yanlış var
@@ -772,27 +848,28 @@
   }
 
   // --- Olay bağlama ---
-  document.getElementById('btnCheck').addEventListener('click', checkNow);
-  document.getElementById('btnReset').addEventListener('click', resetAll);
-  document.getElementById('btnReveal').addEventListener('click', revealAll);
-  document.getElementById('fabCheck').addEventListener('click', checkNow);
-  document.getElementById('fabReset').addEventListener('click', resetAll);
-  document.getElementById('fabReveal').addEventListener('click', revealAll);
+  document.getElementById('btnCheckDesktop').addEventListener('click', checkNow);
+  document.getElementById('btnResetDesktop').addEventListener('click', resetAll);
+  document.getElementById('btnRevealDesktop').addEventListener('click', revealAll);
+  
+  // Mobil butonları bağla (Yeni ID'ler)
+  document.getElementById('btnCheckMobile').addEventListener('click', checkNow);
+  document.getElementById('btnResetMobile').addEventListener('click', resetAll);
+  document.getElementById('btnRevealMobile').addEventListener('click', revealAll);
+
 
   // --- Mobilde scroll yaparken appbar gizle ---
   let lastScrollTop = 0;
   const appbar = document.querySelector('header.appbar');
   
   window.addEventListener('scroll', ()=>{
-    if(window.innerWidth >= 768) return; // Sadece mobilde çalışsın
+    if(window.innerWidth >= 768) return; 
     
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     
     if(scrollTop > lastScrollTop && scrollTop > 100){
-      // Aşağı scroll
       appbar.classList.add('hidden');
     } else {
-      // Yukarı scroll
       appbar.classList.remove('hidden');
     }
     
