@@ -29,7 +29,7 @@
     html{
       height: 100%;
       /* Mobil kaydırmayı etkin tutar */
-      overflow-x: hidden;
+      overflow-x: auto;
     }
     
     body{
@@ -54,7 +54,7 @@
     /* YALNIZCA MASAÜSTÜ İÇİN ÖLÇEKLENDİRME VE HİZALAMA */
     @media (min-width: 768px) {
         html {
-            overflow: hidden; /* Masaüstünde kaydırma çubuğunu kaldırır */
+            overflow: auto; /* Masaüstünde kaydırma çubuğunu kaldırır */
         }
         body {
             display: flex;
@@ -335,9 +335,22 @@
       }
     }
 
-    /* FAB alanı tamamen gizlendi */
+    /* FAB alanı - mobilde görünür */
     .fab{
-        display: none;
+        position:fixed;
+        right:16px;
+        bottom:16px;
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+        z-index:20;
+    }
+    
+    /* Sadece mobilde göster */
+    @media (min-width:768px){
+      .fab{
+        display:none;
+      }
     }
 
     .muted{
@@ -487,7 +500,11 @@
       <button class="btn" id="btnRevealDesktop">👁 Cevapları Göster</button>
     </div>
 
-    <div class="fab"></div>
+    <div class="fab">
+      <button class="btn" id="fabCheck" aria-label="Kontrol Et">✓</button>
+      <button class="btn" id="fabReset" aria-label="Sıfırla">↻</button>
+      <button class="btn" id="fabReveal" aria-label="Cevapları Göster">👁</button>
+    </div>
 
     <footer class="muted">
       <strong>💡 Not:</strong> Örneğin "mum alevi" kimyasal enerjinin ışık ve ısıya dönüşmesine örnektir. Bu etkinlikte kartlar baskın görülen enerji biçimine göre eşleştirilecek şekilde hazırlanmıştır. Ancak "Mum alevi" kartları özel olarak hem Isı hem de Işık Enerjisi kutularına yerleştirilebilir.
@@ -797,6 +814,11 @@
     document.getElementById('btnCheckMobile').style.display = '';
     document.getElementById('btnResetMobile').style.display = '';
     document.getElementById('btnRevealMobile').style.display = '';
+    
+    // FAB butonlarını geri yükle
+    document.getElementById('fabCheck').style.display = '';
+    document.getElementById('fabReset').style.display = '';
+    document.getElementById('fabReveal').style.display = '';
 
     render(); 
   }
@@ -814,6 +836,10 @@
     document.getElementById('btnRevealDesktop').style.display = '';
     document.getElementById('btnResetMobile').style.display = '';
     document.getElementById('btnRevealMobile').style.display = '';
+    
+    // FAB butonları
+    document.getElementById('fabReset').style.display = '';
+    document.getElementById('fabReveal').style.display = '';
     
     render(); 
   }
@@ -855,6 +881,11 @@
   document.getElementById('btnCheckMobile').addEventListener('click', checkNow);
   document.getElementById('btnResetMobile').addEventListener('click', resetAll);
   document.getElementById('btnRevealMobile').addEventListener('click', revealAll);
+  
+  // FAB butonlarını bağla (mobil)
+  document.getElementById('fabCheck').addEventListener('click', checkNow);
+  document.getElementById('fabReset').addEventListener('click', resetAll);
+  document.getElementById('fabReveal').addEventListener('click', revealAll);
 
 
   // --- Mobilde scroll yaparken appbar gizle ---
